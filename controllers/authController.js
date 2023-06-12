@@ -1,0 +1,3 @@
+const registerController = () => {};
+
+export { registerController };
