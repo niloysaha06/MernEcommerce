@@ -1,10 +1,19 @@
 import express from "express";
 import colors from "colors";
 import dotenv from "dotenv";
+import morgan from "morgan";
+import connetDB from "./config/db.js";
 
 dotenv.config();
 
+//database config
+connetDB();
+
 const app = express();
+
+//middlewares
+app.use(express.json());
+app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to ecommerce app</h1>");
