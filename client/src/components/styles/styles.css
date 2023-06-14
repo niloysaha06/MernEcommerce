@@ -51,8 +51,7 @@
     border-bottom: 1px solid #ffefba ;
 }
 
-/* =================================
-======== page not found css ======= */
+/*--------------------page not found ---------------------------  */
 .pnf {
     display: flex;
     min-height: 65vh;
@@ -80,4 +79,14 @@
   .pnf-btn:hover {
     background-color: black;
     color: white;
+  }
+
+/* -------------------contact--------------------- */
+  .contactus {
+    margin: 0;
+    padding: 0;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
