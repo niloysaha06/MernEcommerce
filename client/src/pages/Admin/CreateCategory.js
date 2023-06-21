@@ -4,10 +4,15 @@ import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/Layout/AdminMenu";
 import axios from "axios";
 import CategoryForm from "../../components/Form/CategoryForm";
+import { Modal } from "antd";
 
 const CreateCategory = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [updateName, setUpdateName] = useState("");
+
   //handle form
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,9 +46,37 @@ const CreateCategory = () => {
     }
   };
 
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
   useEffect(() => {
     getAllCategory();
   }, []);
+
+  //handle update
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.put(
+        `/api/v1/category/update-category/${selectedId}`,
+        { name: updateName }
+      );
+      if (data?.success) {
+        toast.success(`${updateName} is updated`);
+        setSelectedId(null);
+        setUpdateName("");
+        setVisible(false);
+        getAllCategory();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <Layout>
       <div className="container-fluid m-3 p-3">
@@ -74,7 +107,19 @@ const CreateCategory = () => {
                       <tr key={c._id}>
                         <td>{c?.name}</td>
                         <td>
-                          <button className="btn btn-primary">Edit</button>
+                          <button
+                            className="btn btn-primary ms-2"
+                            onClick={() => {
+                              setVisible(true);
+                              setUpdateName(c.name);
+                              setSelectedId(c._id);
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button className="btn btn-danger ms-2">
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     );
@@ -83,6 +128,13 @@ const CreateCategory = () => {
               </table>
             </div>
           </div>
+          <Modal onCancel={handleCancel} footer={null} visible={visible}>
+            <CategoryForm
+              value={updateName}
+              setValue={setUpdateName}
+              handleSubmit={handleUpdate}
+            />
+          </Modal>
         </div>
       </div>
     </Layout>
