@@ -4,6 +4,7 @@ import Layout from "../../components/Layout/Layout";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import "../../components/styles/styles.css";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -35,9 +36,17 @@ const Products = () => {
             <div className="d-flex">
               {products?.map((p) => {
                 return (
-                  <Link to={`/dashboard/admin/product/${p.slug}`}>
+                  <Link
+                    key={p._id}
+                    to={`/dashboard/admin/product/${p.slug}`}
+                    className="product-link"
+                  >
                     <div className="card m-2" style={{ width: "18rem" }}>
-                      <img src={p?.photo} className="card-img-top" alt="..." />
+                      <img
+                        src={`/api/v1/product/product-photo/${p._id}`}
+                        className="card-img-top"
+                        alt="..."
+                      />
                       <div className="card-body">
                         <h5 className="card-title">{p?.name}</h5>
                         <p className="card-text">{p?.description}</p>

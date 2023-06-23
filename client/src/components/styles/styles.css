@@ -91,4 +91,11 @@
     justify-content: center;
   }
 
+  /*-----------Products(Admin) page-------------*/
+
+  .product-link{
+    text-decoration: none;
+    color: black;
+  }
+
 
