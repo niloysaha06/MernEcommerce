@@ -41,8 +41,12 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    getAllProducts();
-  }, []);
+    if (!checked.length || !radio.length) getAllProducts();
+  }, [checked.length, radio.length]);
+
+  useEffect(() => {
+    if (checked.length || radio.length) filterProduct();
+  }, [checked, radio]);
 
   //filter by category
   const handleFilter = async (value, id) => {
@@ -53,6 +57,18 @@ const HomePage = () => {
       all = all.filter((c) => c !== id);
     }
     setChecked(all);
+  };
+  //get filter product
+  const filterProduct = async () => {
+    try {
+      const { data } = await axios.post("/api/v1/product/product-filters", {
+        checked,
+        radio,
+      });
+      setProducts(data?.products);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -83,6 +99,14 @@ const HomePage = () => {
                   ))}
               </Radio.Group>
             </div>
+            <div className="d-flex flex-column mt-3">
+              <button
+                className="btn btn-danger"
+                onClick={() => window.location.reload()}
+              >
+                RESET FILTER
+              </button>
+            </div>
           </div>
         </div>
         <div className="col-md-9">
@@ -98,7 +122,10 @@ const HomePage = () => {
                   />
                   <div className="card-body">
                     <h5 className="card-title">{p?.name}</h5>
-                    <p className="card-text">{p?.description}</p>
+                    <p className="card-text">
+                      {p?.description.substring(0, 30)}
+                    </p>
+                    <p className="card-text">$ {p?.price}</p>
                     <button className="btn btn-primary ms-1">
                       More Details
                     </button>
