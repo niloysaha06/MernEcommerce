@@ -175,7 +175,7 @@ const HomePage = () => {
                 </div>
               ))}
           </div>
-          <div className="m-2 p-3">
+          <div className="m-2 p-3 text-center">
             {products && products.length < total && (
               <button
                 className="btn btn-warning"
